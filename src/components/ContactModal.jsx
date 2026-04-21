@@ -1,17 +1,32 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import emailjs from '@emailjs/browser'
 
 export default function ContactModal({ open, onClose }) {
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState('idle') // 'idle' | 'sending' | 'sent' | 'error'
+  const formRef = useRef(null)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSent(true)
-    setTimeout(() => {
-      onClose()
-      setSent(false)
-      e.target.reset()
-    }, 1800)
+    setStatus('sending')
+
+    try {
+      await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+      )
+      setStatus('sent')
+      setTimeout(() => {
+        onClose()
+        setStatus('idle')
+        formRef.current?.reset()
+      }, 1800)
+    } catch {
+      setStatus('error')
+      setTimeout(() => setStatus('idle'), 3000)
+    }
   }
 
   return (
@@ -54,23 +69,34 @@ export default function ContactModal({ open, onClose }) {
               get in touch.
             </h3>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-              <Field type="text"  placeholder="name_"    required />
-              <Field type="email" placeholder="email_"   required />
-              <TextareaField      placeholder="message_" required />
+            <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6">
+              {/* name maps to {{from_name}} in EmailJS template */}
+              <Field type="text"  name="from_name"    placeholder="name_"    required />
+              {/* email maps to {{from_email}} */}
+              <Field type="email" name="from_email"   placeholder="email_"   required />
+              {/* message maps to {{message}} */}
+              <TextareaField      name="message"       placeholder="message_" required />
 
-              <div className="flex justify-end mt-2">
+              <div className="flex items-center justify-end gap-4 mt-2">
+                {status === 'error' && (
+                  <span className="font-mono text-[0.65rem] tracking-[0.1em] text-red-400/80">
+                    failed — try again
+                  </span>
+                )}
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`font-mono text-[0.75rem] tracking-[0.18em] uppercase px-8 py-3 border transition-all duration-300 cursor-pointer ${
-                    sent
+                  disabled={status === 'sending' || status === 'sent'}
+                  whileHover={{ scale: status === 'idle' ? 1.02 : 1 }}
+                  whileTap={{ scale: status === 'idle' ? 0.98 : 1 }}
+                  className={`font-mono text-[0.75rem] tracking-[0.18em] uppercase px-8 py-3 border transition-all duration-300 cursor-pointer disabled:cursor-default ${
+                    status === 'sent'
                       ? 'bg-transparent text-white border-white/30'
+                      : status === 'sending'
+                      ? 'bg-transparent text-white/40 border-white/20'
                       : 'bg-white text-black border-white hover:bg-transparent hover:text-white'
                   }`}
                 >
-                  {sent ? 'sent ✓' : 'send →'}
+                  {status === 'sending' ? 'sending…' : status === 'sent' ? 'sent ✓' : 'send →'}
                 </motion.button>
               </div>
             </form>
@@ -81,10 +107,11 @@ export default function ContactModal({ open, onClose }) {
   )
 }
 
-function Field({ type, placeholder, required }) {
+function Field({ type, name, placeholder, required }) {
   return (
     <input
       type={type}
+      name={name}
       placeholder={placeholder}
       required={required}
       className="w-full bg-transparent border-0 border-b border-white/20 focus:border-white text-white font-mono text-[0.82rem] tracking-[0.06em] py-[10px] outline-none transition-colors duration-300 placeholder:text-white/22 placeholder:tracking-[0.1em] placeholder:font-mono placeholder:text-[0.78rem]"
@@ -92,9 +119,10 @@ function Field({ type, placeholder, required }) {
   )
 }
 
-function TextareaField({ placeholder, required }) {
+function TextareaField({ name, placeholder, required }) {
   return (
     <textarea
+      name={name}
       placeholder={placeholder}
       required={required}
       rows={4}
