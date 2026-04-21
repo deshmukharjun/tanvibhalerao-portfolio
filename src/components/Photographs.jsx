@@ -35,7 +35,7 @@ export default function Photographs({ onOpen }) {
               alt=""
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 1 }}
               transition={{ duration: 0.6, ease: 'easeInOut' }}
               className="absolute inset-0 w-full h-full object-cover"
             />
