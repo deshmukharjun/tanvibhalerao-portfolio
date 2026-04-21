@@ -14,7 +14,7 @@ export default function ContactModal({ open, onClose }) {
 
     try {
       await emailjs.send(
-        'service_53blpoj',
+        'service_9icltzg',
         'template_2o0yg1q',
         {
           from_name:  data.get('from_name'),
