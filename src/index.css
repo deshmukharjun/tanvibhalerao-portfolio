@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Font: Terminal Grotesque ─── */
+@font-face {
+  font-family: 'Terminal Grotesque';
+  src: url('./assets/fonts/terminal-grotesque-webfont.woff2') format('woff2'),
+       url('./assets/fonts/terminal-grotesque-webfont.woff')  format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Font: Monument Grotesk ─── */
+@font-face {
+  font-family: 'Monument Grotesk';
+  src: url('./assets/fonts/MonumentGrotesk-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monument Grotesk';
+  src: url('./assets/fonts/MonumentGrotesk-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monument Grotesk';
+  src: url('./assets/fonts/MonumentGrotesk-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monument Grotesk Mono';
+  src: url('./assets/fonts/MonumentGrotesk-Mono.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monument Grotesk Semi-Mono';
+  src: url('./assets/fonts/MonumentGrotesk-Semi-Mono.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; background: #000; color: #fff; }
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Monument Grotesk', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar       { width: 2px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); }
+
+/* ─── Film grain ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.28;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.045'/%3E%3C/svg%3E");
+}
+
+/* ─── Scanlines ─── */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 2px,
+    rgba(0,0,0,0.055) 2px, rgba(0,0,0,0.055) 4px
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ─── Cursor blink ─── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.cursor::after {
+  content: '█';
+  font-size: 0.42em;
+  vertical-align: middle;
+  margin-left: 6px;
+  animation: blink 1s step-end infinite;
+}
+
+/* ─── BG gradients ─── */
+@keyframes gradFloat {
+  0%,100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.grad-hero {
+  background: linear-gradient(140deg, #060606, #0f0f0f, #040404, #0a0a0a);
+  background-size: 400% 400%;
+  animation: gradFloat 10s ease infinite;
+}
+.grad-films {
+  background: linear-gradient(220deg, #070707, #0d0d0d, #030303, #090909);
+  background-size: 400% 400%;
+  animation: gradFloat 13s ease infinite;
+}
