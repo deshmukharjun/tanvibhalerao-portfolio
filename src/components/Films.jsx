@@ -43,14 +43,14 @@ export default function Films({ onOpen }) {
 
         <h2
           className="font-terminal font-normal leading-[0.95] tracking-[-0.03em] text-white"
-          style={{ fontSize: 'clamp(5rem, 16vw, 6rem)' }}
+          style={{ fontSize: 'clamp(3.5rem, 16vw, 6rem)' }}
         >
           films
         </h2>
 
         <button
           onClick={onOpen}
-          className="group flex items-center gap-4 bg-transparent border-none text-white cursor-pointer p-0 hover:opacity-60 transition-opacity duration-300"
+          className="group flex items-center flex-wrap justify-center gap-3 md:gap-4 bg-transparent border-none text-white cursor-pointer p-0 hover:opacity-60 transition-opacity duration-300"
         >
           <DiagArrow delay={0} />
           <DiagArrow delay={0.18} />

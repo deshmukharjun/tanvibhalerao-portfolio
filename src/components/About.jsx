@@ -9,7 +9,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative min-h-screen bg-black flex items-center px-[8vw] py-24 pb-36 overflow-hidden"
+      className="relative min-h-screen bg-black flex items-center px-[8vw] py-16 md:py-24 pb-24 md:pb-36 overflow-hidden"
     >
       {/* Ghost number */}
       <span
@@ -28,7 +28,7 @@ export default function About() {
         className="w-full"
       >
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[5vw] items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-[5vw] items-start">
 
           {/* Left: Bio */}
           <div>
@@ -59,7 +59,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right: Portrait — fills column, image defines its own proportions */}
+          {/* Right: Portrait */}
           <div className="w-full overflow-hidden border border-white/[0.08]">
             <img
               src="/about-me.jpeg"

@@ -22,23 +22,38 @@ export default function Photographs({ onOpen }) {
   return (
     <section
       id="photographs"
-      className="relative w-screen overflow-hidden bg-black"
-      style={{ height: '100vh' }}
+      className="relative w-screen overflow-hidden bg-black min-h-screen"
     >
-      <div className="flex h-full">
+      <div className="flex flex-col md:flex-row min-h-screen">
 
-        {/* ── LEFT: text + arrow ── */}
+        {/* ── RIGHT: cycling photo — appears first on mobile ── */}
+        <div className="relative overflow-hidden order-1 md:order-2 md:flex-1 h-[55vh] md:h-auto">
+          <AnimatePresence>
+            <motion.img
+              key={index}
+              src={`/photos-section/${PHOTOS[index]}`}
+              alt=""
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </AnimatePresence>
+        </div>
+
+        {/* ── LEFT: text + arrow — appears second on mobile ── */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 flex flex-col justify-center px-[8vw] w-1/2 shrink-0 bg-black"
+          className="relative z-10 flex flex-col justify-center px-[8vw] py-14 md:py-0 w-full md:w-1/2 md:shrink-0 bg-black order-2 md:order-1"
         >
 
           <h2
             className="font-terminal font-normal lowercase leading-[0.92] text-white mb-10"
-            style={{ fontSize: 'clamp(3rem, 6vw, 6rem)' }}
+            style={{ fontSize: 'clamp(2.6rem, 6vw, 6rem)' }}
           >
             photographs
           </h2>
@@ -72,25 +87,6 @@ export default function Photographs({ onOpen }) {
             ))}
           </div>
         </motion.div>
-
-        {/* ── RIGHT: cycling photo ── */}
-        {/* Two layers stacked — current fades in on top of previous.
-            key={index} ensures AnimatePresence always sees a new child
-            at every step, including the 9→0 loop boundary. */}
-        <div className="relative flex-1 overflow-hidden">
-          <AnimatePresence>
-            <motion.img
-              key={index}
-              src={`/photos-section/${PHOTOS[index]}`}
-              alt=""
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: 'easeInOut' }}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </AnimatePresence>
-        </div>
 
       </div>
     </section>

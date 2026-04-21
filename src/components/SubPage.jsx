@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 /* ─── Photographs data ─── */
-// All photos shown in the masonry gallery sub-page
 const PHOTOS = [
   'DSC_0056.jpg.jpeg', 'DSC_0139.jpg', 'DSC_0190.jpg', 'DSC_0307-2.jpg',
   'DSC_0334.jpg.jpeg', 'DSC_0347.jpg', 'DSC_0450.jpg', 'DSC_0583.jpg',
@@ -11,8 +10,6 @@ const PHOTOS = [
 ]
 
 /* ─── Films data ─── */
-// img paths: drop stills into /public/films/ when ready.
-// Until then, each card shows its gradient + title.
 const DIRECTED = [
   {
     title: 'Anokhi Olakh',
@@ -56,7 +53,7 @@ const CREW = [
 
 /* ═══ Main component ═══ */
 export default function SubPage({ page, onClose }) {
-  const [lightbox, setLightbox] = useState(null) // numeric index or null
+  const [lightbox, setLightbox] = useState(null)
 
   return (
     <AnimatePresence>
@@ -82,26 +79,27 @@ export default function SubPage({ page, onClose }) {
 
           {/* ── PHOTOGRAPHS ── */}
           {page === 'photographs' && (
-            <div className="px-[8vw] pt-12 pb-24">
+            <div className="px-[4vw] md:px-[8vw] pt-10 md:pt-12 pb-24">
               <h1
                 className="font-terminal font-normal leading-none tracking-[-0.02em] text-white mb-2"
-                style={{ fontSize: 'clamp(3rem, 9vw, 7rem)' }}
+                style={{ fontSize: 'clamp(2.4rem, 9vw, 7rem)' }}
               >
                 Photographs
               </h1>
-              <p className="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-white/25 mb-12">
+              <p className="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-white/25 mb-10 md:mb-12">
                 {PHOTOS.length} frames
               </p>
 
-              <div style={{ columns: 3, columnGap: '12px' }}>
+              {/* Responsive masonry: 1 col mobile, 2 col sm, 3 col md+ */}
+              <div className="columns-1 sm:columns-2 md:columns-3 gap-[8px] md:gap-[12px]">
                 {PHOTOS.map((photo, i) => (
                   <motion.div
                     key={photo}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ breakInside: 'avoid', marginBottom: '12px' }}
-                    className="overflow-hidden cursor-pointer"
+                    style={{ breakInside: 'avoid', marginBottom: '8px' }}
+                    className="overflow-hidden cursor-pointer md:[margin-bottom:12px]"
                     onClick={() => setLightbox(i)}
                   >
                     <img
@@ -119,24 +117,20 @@ export default function SubPage({ page, onClose }) {
           {/* ── FILMS ── */}
           {page === 'films' && (
             <div className="pb-24">
-              {/* Page title */}
-              <div className="px-[8vw] pt-12 pb-10 border-b border-white/[0.06]">
+              <div className="px-[8vw] pt-10 md:pt-12 pb-8 md:pb-10 border-b border-white/[0.06]">
                 <h1
                   className="font-terminal font-normal leading-none tracking-[-0.02em] text-white mb-2"
-                  style={{ fontSize: 'clamp(3rem, 9vw, 7rem)' }}
+                  style={{ fontSize: 'clamp(2.4rem, 9vw, 7rem)' }}
                 >
                   Films
                 </h1>
               </div>
 
-              {/* Section: Directed */}
               <FilmGroup label="Directed by Tanvi Bhalerao" films={DIRECTED} startIndex={0} />
-
-              {/* Section: Crew */}
               <FilmGroup label="Worked as Crew" films={CREW} startIndex={DIRECTED.length} />
             </div>
           )}
-          {/* Lightbox — rendered inside the sub-page layer */}
+
           <Lightbox
             photos={PHOTOS}
             index={lightbox}
@@ -159,7 +153,6 @@ function Lightbox({ photos, index, onClose, onChange }) {
   const next = useCallback(() =>
     onChange(i => (i + 1) % total), [total, onChange])
 
-  // Keyboard navigation
   useEffect(() => {
     if (index === null) return
     const handler = (e) => {
@@ -183,7 +176,6 @@ function Lightbox({ photos, index, onClose, onChange }) {
           className="fixed inset-0 z-[900] bg-black flex items-center justify-center"
           onClick={onClose}
         >
-          {/* Image — hard cut, no animation */}
           <img
             src={`/photographs/${photos[index]}`}
             alt=""
@@ -195,7 +187,7 @@ function Lightbox({ photos, index, onClose, onChange }) {
           {/* Left arrow */}
           <button
             onClick={(e) => { e.stopPropagation(); prev() }}
-            className="absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center border border-white/20 text-white/60 hover:text-white hover:border-white/60 transition-all duration-200 bg-black/40 hover:bg-black/70 font-mono text-lg cursor-pointer"
+            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-11 md:h-11 flex items-center justify-center border border-white/20 text-white/60 hover:text-white hover:border-white/60 transition-all duration-200 bg-black/40 hover:bg-black/70 font-mono text-lg cursor-pointer"
           >
             ←
           </button>
@@ -203,13 +195,13 @@ function Lightbox({ photos, index, onClose, onChange }) {
           {/* Right arrow */}
           <button
             onClick={(e) => { e.stopPropagation(); next() }}
-            className="absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center border border-white/20 text-white/60 hover:text-white hover:border-white/60 transition-all duration-200 bg-black/40 hover:bg-black/70 font-mono text-lg cursor-pointer"
+            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-11 md:h-11 flex items-center justify-center border border-white/20 text-white/60 hover:text-white hover:border-white/60 transition-all duration-200 bg-black/40 hover:bg-black/70 font-mono text-lg cursor-pointer"
           >
             →
           </button>
 
           {/* Counter + close */}
-          <div className="absolute top-6 left-0 right-0 flex items-center justify-between px-6">
+          <div className="absolute top-4 md:top-6 left-0 right-0 flex items-center justify-between px-4 md:px-6">
             <span className="font-mono text-[0.6rem] tracking-[0.2em] text-white/30 uppercase">
               {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
             </span>
@@ -226,13 +218,12 @@ function Lightbox({ photos, index, onClose, onChange }) {
   )
 }
 
-/* ═══ Film group (section header + cards) ═══ */
+/* ═══ Film group ═══ */
 function FilmGroup({ label, films, startIndex }) {
   return (
     <div>
-      {/* Group header */}
-      <div className="flex items-center gap-6 px-[8vw] py-6 border-b border-white/[0.06]">
-        <span className="font-mono text-[0.58rem] tracking-[0.28em] uppercase text-white/30 shrink-0">
+      <div className="flex items-center gap-4 md:gap-6 px-[8vw] py-5 md:py-6 border-b border-white/[0.06]">
+        <span className="font-mono text-[0.55rem] md:text-[0.58rem] tracking-[0.2em] md:tracking-[0.28em] uppercase text-white/30 shrink-0">
           {label}
         </span>
         <div className="flex-1 h-px bg-white/[0.06]" />
@@ -241,7 +232,6 @@ function FilmGroup({ label, films, startIndex }) {
         </span>
       </div>
 
-      {/* Cards */}
       {films.map((film, i) => (
         <FilmCard key={film.title} film={film} index={startIndex + i} />
       ))}
@@ -256,13 +246,13 @@ function FilmCard({ film, index }) {
   return (
     <motion.div
       className="relative w-full overflow-hidden border-b border-white/[0.06] cursor-pointer"
-      style={{ minHeight: '42vh' }}
+      style={{ minHeight: '36vh' }}
       initial="rest"
       whileHover="hover"
       animate="rest"
       onClick={() => film.url && window.open(film.url, '_blank', 'noopener,noreferrer')}
     >
-      {/* ── Film still (visible by default, hides on hover) ── */}
+      {/* Film still */}
       <motion.div
         variants={{
           rest: { opacity: hasImage ? 1 : 0 },
@@ -283,7 +273,7 @@ function FilmCard({ film, index }) {
         />
       </motion.div>
 
-      {/* ── White fill sweep in on hover ── */}
+      {/* White fill on hover */}
       <motion.div
         variants={{
           rest: { scaleX: 0 },
@@ -294,12 +284,11 @@ function FilmCard({ film, index }) {
         className="absolute inset-0 bg-white"
       />
 
-      {/* ── Card content ── */}
+      {/* Card content */}
       <div
-        className="relative z-10 flex flex-col justify-between px-[8vw] py-8 text-right"
-        style={{ minHeight: '42vh' }}
+        className="relative z-10 flex flex-col justify-between px-[8vw] py-6 md:py-8 text-right"
+        style={{ minHeight: '36vh' }}
       >
-        {/* Top row */}
         <div className="flex items-center justify-between">
           <motion.span
             variants={{ rest: { color: 'rgba(255,255,255,0.35)' }, hover: { color: 'rgba(0,0,0,0.25)' } }}
@@ -317,18 +306,17 @@ function FilmCard({ film, index }) {
           </motion.span>
         </div>
 
-        {/* Title */}
         <motion.h2
           variants={{ rest: { color: '#ffffff' }, hover: { color: '#000000' } }}
           transition={{ duration: 0.3 }}
           className="font-terminal font-normal leading-none tracking-[-0.02em] uppercase self-end"
-          style={{ fontSize: 'clamp(2rem, 5.5vw, 5rem)' }}
+          style={{ fontSize: 'clamp(1.6rem, 5.5vw, 5rem)' }}
         >
           {film.title}
           <motion.span
             variants={{ rest: { opacity: 1, x: 0, color: 'rgba(255,255,255,0.6)' }, hover: { opacity: 1, x: 0, color: 'rgba(0,0,0,0.5)' } }}
             transition={{ duration: 0.3 }}
-            className="ml-4 text-[0.4em] align-middle tracking-[0.1em]"
+            className="ml-3 md:ml-4 text-[0.4em] align-middle tracking-[0.1em]"
           >
             ↗
           </motion.span>

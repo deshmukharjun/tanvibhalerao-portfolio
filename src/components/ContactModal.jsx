@@ -24,7 +24,7 @@ export default function ContactModal({ open, onClose }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
           onClick={(e) => e.target === e.currentTarget && onClose()}
-          className="fixed inset-0 z-[800] flex items-center justify-center p-6"
+          className="fixed inset-0 z-[800] flex items-center justify-center p-4 md:p-6"
           style={{
             background: 'rgba(0,0,0,0.78)',
             backdropFilter: 'blur(14px)',
@@ -37,7 +37,7 @@ export default function ContactModal({ open, onClose }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.97 }}
             transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-[500px] bg-[#040404] border border-white/10 px-12 py-11"
+            className="relative w-full max-w-[500px] bg-[#040404] border border-white/10 px-6 py-8 md:px-12 md:py-11"
           >
             {/* Close */}
             <button
