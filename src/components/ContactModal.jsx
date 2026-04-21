@@ -19,6 +19,8 @@ export default function ContactModal({ open, onClose }) {
         {
           from_name:  data.get('from_name'),
           from_email: data.get('from_email'),
+          name:       data.get('from_name'),   // {{name}} in template body/From Name
+          email:      data.get('from_email'),  // {{email}} in Reply To
           message:    data.get('message'),
         },
         { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
