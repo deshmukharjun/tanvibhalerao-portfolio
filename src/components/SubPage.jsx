@@ -38,7 +38,7 @@ const CREW = [
   {
     title: 'A Tiny Cut',
     type: 'Short Film',
-    img: '/films/tiny-cut.png',
+    img: '/films/tiny-cut1.png',
     grad: ['#180808', '#0b0404'],
     url: 'https://youtu.be/904nJly6w0w?si=WQmB2F54QKZW8l9t',
   },
