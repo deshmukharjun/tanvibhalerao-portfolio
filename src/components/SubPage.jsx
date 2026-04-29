@@ -38,9 +38,9 @@ const CREW = [
   {
     title: 'A Tiny Cut',
     type: 'Short Film',
-    img: '/films/a-tiny-cut.jpg',
+    img: '/films/tiny-cut.png',
     grad: ['#180808', '#0b0404'],
-    url: 'https://www.youtube.com/watch?v=REPLACE_A_TINY_CUT',
+    url: 'https://youtu.be/904nJly6w0w?si=WQmB2F54QKZW8l9t',
   },
   {
     title: 'Pasoori',
